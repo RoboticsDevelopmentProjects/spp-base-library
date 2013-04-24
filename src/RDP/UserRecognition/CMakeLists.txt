@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(UserRecognition)
 
-set(Atlas_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
+add_definitions(-DSHARE_DIR="${CMAKE_INSTALL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}")
 
 set(Boost_FIND_REQUIRED TRUE)
 set(Boost_FIND_QUIETLY TRUE) 
@@ -12,9 +12,8 @@ set(Boost_DEBUG TRUE)
 set(Boost_USE_STATIC_LIBS ${OGRE_STATIC})
 #set(Boost_USE_STATIC_LIBS TRUE)
 
-add_definitions(-fPIC)
-
 find_package(Boost COMPONENTS system thread date_time serialization)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs message_generation sensor_msgs image_transport cv_bridge)
 find_package(PkgConfig)
 find_package(OpenCV)
 
@@ -77,48 +76,48 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIR}
     ${PROJECT_BINARY_DIR}
-    ${Atlas_INCLUDE_DIR}
 )
 
 set(UserRecognition_SRC
     UserDetector.cpp
-    UserRecognition.cpp
+    UserRecognitionServer.cpp
+    UserRecognitionClient.cpp
     Xtion.cpp
     XnErrorChecker.cpp
+    main.cpp
 )
 
 set(UserRecognition_HDR
     UserDetector.h
     UserStatus.h
-    UserRecognition.h
+    UserRecognitionServer.h
+    UserRecognitionClient.h
     AudioDevice.h
     ImageDevice.h
     Xtion.h
     XnErrorChecker.h
 )
 
-add_library(UserRecognition
+add_executable(UserRecognition
     ${UserRecognition_SRC}
     ${UserRecognition_HDR}
 )
 
 target_link_libraries(UserRecognition 
+    ${catkin_LIBRARIES}
     ${OPENNI_LIBRARY}
     ${OpenCV_LIBS}
     ${Boost_LIBRARIES}
     ${Boost_SYSTEM_LIBRARY}
 )
 
-add_executable(UserRecognitionTest
-    UserRecognitionTest.cpp
-)
-
-target_link_libraries(UserRecognitionTest
-    UserRecognition
-)
-
 link_directories(
    ${Boost_LIBRARY_DIRS}
    ${Boost_LIBRARY_DIR}
+)
+
+install(FILES
+   InitDevice.xml
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 

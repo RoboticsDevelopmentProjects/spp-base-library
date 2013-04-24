@@ -1,6 +1,16 @@
 #include <iostream>
-#include "UserRecognition.h"
+#include "UserRecognitionServer.h"
 
+int main(int argc, char *argv[]){
+    ros::init(argc,argv,"UserRecognition");
+    ros::NodeHandle node;
+    nui::UserRecognitionServer server(node);
+    server.runServer();
+
+    return 0;
+}
+
+/*
 using namespace nui;
 using namespace std;
 
@@ -28,4 +38,6 @@ int main(){
     
     return 0;
 }
+
+*/
 

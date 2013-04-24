@@ -1,14 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(SpeechRecognition)
 
-#set(CMAKE_CXX_FLAGS ${CMAKE_CSS_FLAGS} "-fPIC")
-set(EXTRA_OPTIONS "-O3 -Wno-deprecated -fPIC -DLINUX")
-set_source_files_properties(${SRC_FILES}
-    PROPERTIES
-    COMPILE_FLAGS "${EXTRA_OPTIONS}"
-)
-
-set(Atlas_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
+add_definitions(-DSHARE_DIR="${CMAKE_INSTALL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}")
 
 set(Boost_FIND_REQUIRED TRUE)
 set(Boost_FIND_QUIETLY TRUE)
@@ -18,13 +11,13 @@ set(Boost_DEBUG TRUE)
 
 set(Boost_USE_STATIC_LIBS ${OGRE_STATIC})
 
-FIND_PACKAGE(Boost COMPONENTS system thread filesystem regex)
+find_package(Boost COMPONENTS system thread filesystem regex)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs message_generation)
 
 set(Include_DIR 
     ${PROJECT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${Atlas_INCLUDE_DIR}
     ${BOOST_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIR}
     ${PROJECT_BINARY_DIR}
@@ -47,28 +40,32 @@ endif(UNIX)
 
 include_directories(${Include_DIR})
 
-set(Atlas_Source
-    ${Atlas_INCLUDE_DIR}/Atlas/Timer.cpp
+set(SpeechRecognition_SRCS
+    main.cpp
+    Timer.h
+    Timer.cpp
+    SpeechRecognitionServer.h
+    SpeechRecognitionServer.cpp
+    SpeechRecognitionClient.h
+    SpeechRecognitionClient.cpp
 )
 
-set(UserRecognition_SRCS
-    SpeechRecognitionTest.cpp
-    SpeechRecognition.h
-    SpeechRecognition.cpp
-    ${Atlas_Source}
-)
-
-add_library(SpeechRecognition
-    SHARED ${UserRecognition_SRCS}
-)
+#add_library(SpeechRecognition
+#    ${UserRecognition_SRCS}
+#)
 
 link_directories(
     ${Boost_LIBRARY_DIRS}
     ${Boost_LIBRARY_DIR}
 )
 
+add_executable(SpeechRecognition
+    ${SpeechRecognition_SRCS}
+)
+
 target_link_libraries(SpeechRecognition
     ${Boost_LIBRARIES}
+    ${catkin_LIBRARIES}
     #${Boost_SYSTEM_LIBRARY}
     julius
     sent
@@ -84,11 +81,14 @@ target_link_libraries(SpeechRecognition
     icuuc
 )
 
-add_executable(SpeechRecognitionTest
-    SpeechRecognitionTest.cpp
+install(FILES
+    julius.jconf
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-target_link_libraries(SpeechRecognitionTest
-    SpeechRecognition
+install(DIRECTORY
+    model
+    gram
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 

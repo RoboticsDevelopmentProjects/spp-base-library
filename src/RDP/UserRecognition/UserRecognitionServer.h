@@ -1,7 +1,7 @@
 /*******************************************************************
  * Copyright (c) 2012 Daiki Maekawa
  *
- * @file UserRecognition.h
+ * @file UserRecognitionServer.h
  * @brief User Recognition
  * @author Daiki Maekawa
  * @date 2012-01-10
@@ -10,19 +10,20 @@
 #pragma once
 #include <boost/shared_ptr.hpp>
 #include <vector>
+#include <ros/ros.h>
+#include <std_msgs/Empty.h>
 #include "UserStatus.h"
 #include "ImageDevice.h"
-#include "Atlas/Singleton.h"
 
 namespace nui{
 
-    class UserRecognition{
+    class UserRecognitionServer{
         class Impl;
         boost::shared_ptr<Impl> pImpl;
 
     public:
-        UserRecognition();
-        void startProcessing();
+        UserRecognitionServer(ros::NodeHandle &node);
+	void runServer();
         void waitUpdateAll();
         NIMat depthImage();
         NIMat rgbImage();
