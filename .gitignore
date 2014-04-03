@@ -2,12 +2,29 @@
 *.slo
 *.lo
 *.o
+<<<<<<< HEAD
+=======
+*.obj
+>>>>>>> eb2dbd593dc0e640a02c016e8342a708ad16a15b
 
 # Compiled Dynamic libraries
 *.so
 *.dylib
+<<<<<<< HEAD
+=======
+*.dll
+>>>>>>> eb2dbd593dc0e640a02c016e8342a708ad16a15b
 
 # Compiled Static libraries
 *.lai
 *.la
 *.a
+<<<<<<< HEAD
+=======
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+>>>>>>> eb2dbd593dc0e640a02c016e8342a708ad16a15b
