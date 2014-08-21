@@ -22,8 +22,6 @@ http://daikimaekawa.github.io/sppboard/2011/05/10/SPPBoard/
  
 ##動作環境
 
-
-
 #### ハードウェア
 
  - beagleboard-xm(ubuntu11.10 ARM Coretex-A8)
