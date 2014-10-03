@@ -4,10 +4,10 @@
 
 int main(int argc, char *argv[])
 {
-	ros::init(argc, argv, "MotionCapture");
-	ros::NodeHandle node;
+    ros::init(argc, argv, "MotionCapture");
+    ros::NodeHandle node;
     QApplication a(argc, argv);
-	MotionCapture w(node);
+    MotionCapture w(node);
     w.show();
     
     return a.exec();
