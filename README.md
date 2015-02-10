@@ -94,4 +94,4 @@ catkin_make install
 
 ## ライセンス
 
-MIT
+[MIT](https://github.com/RoboticsDevelopmentProjects/spp-base-library/blob/master/LICENSE)
